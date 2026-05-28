@@ -1,8 +1,18 @@
+import type { user } from "@repo/types";
+
 function App() {
+  const user: user = {
+    email: "test",
+    id: 1,
+    name: "test",
+    password: "122",
+  };
+
   return (
-    <>
-      <h1>walid</h1>
-    </>
+    <div className="bg-green-400">
+      <h1>{user.name}</h1>
+      <h1>{user.email}</h1>
+    </div>
   );
 }
 
