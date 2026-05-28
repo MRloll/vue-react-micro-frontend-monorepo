@@ -1,8 +1,7 @@
-import { Button } from "@repo/ui/button";
 function App() {
   return (
     <>
-      <Button appName="walid" children="hello" />
+      <h1>walid</h1>
     </>
   );
 }
