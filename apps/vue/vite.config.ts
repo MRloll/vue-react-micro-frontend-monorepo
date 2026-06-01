@@ -15,6 +15,7 @@ export default defineConfig({
       remotes: {
         react_app: "http://localhost:5174/assets/remoteEntry.js",
       },
+      shared: ["vue", "react", "react-dom"],
     }),
   ],
   build: {
