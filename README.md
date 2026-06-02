@@ -1,159 +1,137 @@
-# Turborepo starter
+# Vue-React Micro Frontend Monorepo
 
-This Turborepo starter is maintained by the Turborepo core team.
+A monorepo demonstrating a micro-frontend architecture using **Vue 3** as the host shell and **React 19** as a remote micro-frontend, connected via **Module Federation** (`@originjs/vite-plugin-federation`) and orchestrated with **Turborepo**.
 
-## Using this example
+## Architecture
 
-Run the following command:
+```
+┌─────────────────────────────────────┐
+│         Host App (Vue 3)            │
+│  apps/vue  ───  port 5173           │
+│  Vue Router + Nuxt UI               │
+│  Dynamically imports React remote   │
+│  via ReactWrapper.vue               │
+└──────────────┬──────────────────────┘
+               │ Module Federation
+               │ (remoteEntry.js)
+               ▼
+┌─────────────────────────────────────┐
+│       Remote App (React 19)         │
+│  apps/react ───  port 5174          │
+│  Exposes: ./ReactApp                │
+│  Tailwind CSS v4                    │
+└─────────────────────────────────────┘
 
-```sh
-npx create-turbo@latest
+┌─────────────────────────────────────┐
+│         Shared Packages              │
+│  packages/types       @repo/types   │
+│  packages/typescript-config         │
+└─────────────────────────────────────┘
 ```
 
-## What's inside?
+## Project Structure
 
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo build
+```
+vue-react-micro-frontend-monorepo/
+├── apps/
+│   ├── vue/                         # Host shell (Vue 3)
+│   │   ├── src/
+│   │   │   ├── App.vue              # Root component with RouterView
+│   │   │   ├── main.ts              # App entry, vue-router setup
+│   │   │   ├── ReactWrapper.vue     # Loads React remote via federation
+│   │   │   ├── views/index.vue      # Home view (renders ReactWrapper)
+│   │   │   ├── assets/
+│   │   │   └── style.css
+│   │   ├── vite.config.ts           # Federation config (host, consumes react_app)
+│   │   └── package.json
+│   │
+│   └── react/                       # Remote micro-frontend (React 19)
+│       ├── src/
+│       │   ├── App.tsx              # Root component (exposed as remote)
+│       │   ├── main.tsx             # Standalone entry
+│       │   ├── components/
+│       │   │   └── NavBar.tsx       # Example component (uses @repo/types)
+│       │   └── index.css
+│       ├── vite.config.ts           # Federation config (remote, exposes ./ReactApp)
+│       └── package.json
+│
+├── packages/
+│   ├── types/                       # @repo/types — shared TypeScript types
+│   │   ├── src/index.ts             # user interface definition
+│   │   └── package.json
+│   │
+│   └── typescript-config/           # @repo/typescript-config — base tsconfig
+│       ├── base.json
+│       └── package.json
+│
+├── package.json                     # Root workspace & turbo scripts
+├── pnpm-workspace.yaml              # Workspace definition (apps/*, packages/*)
+├── turbo.json                       # Turborepo task pipeline
+└── pnpm-lock.yaml
 ```
 
-Without global `turbo`, use your package manager:
+## Tech Stack
 
-```sh
-cd my-turborepo
-npx turbo build
-pnpm dlx turbo build
-pnpm exec turbo build
+| Layer          | Technology                              |
+| -------------- | --------------------------------------- |
+| Monorepo       | Turborepo 2 + pnpm 9                   |
+| Host Shell     | Vue 3 + Vue Router 5 + Nuxt UI 4       |
+| Remote         | React 19 + Tailwind CSS 4              |
+| Federation     | `@originjs/vite-plugin-federation` 1.4 |
+| Build Tool     | Vite 8                                  |
+| Language       | TypeScript ~6.0                        |
+
+## Installation & Setup
+
+### Prerequisites
+
+- **Node.js** >= 18
+- **pnpm** >= 9.0.0 (install via `npm install -g pnpm`)
+
+### Steps
+
+```bash
+# 1. Clone the repository
+git clone <repository-url>
+cd vue-react-micro-frontend-monorepo
+
+# 2. Install dependencies
+pnpm install
+
+# 3. Build the React remote app (required — see note below)
+pnpm --filter react build
+
+# 4. Preview the React remote (serves the built files with remoteEntry.js)
+pnpm --filter react preview
+
+# 5. In a separate terminal, start the Vue host shell
+pnpm --filter vue dev
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+The Vue host app runs on **http://localhost:5173** and the React remote on **http://localhost:5174**.
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+> **Important:** `@originjs/vite-plugin-federation` only generates the `remoteEntry.js` file during a **production build**, not in dev mode. The Vue host fetches this file to load the React micro-frontend. Therefore you **must** build and preview the React app first. Simply running `pnpm dev` on both will **not** show the React content inside the Vue app.
 
-```sh
-turbo build --filter=docs
+### Production Build
+
+```bash
+pnpm build
+pnpm preview
 ```
 
-Without global `turbo`:
+## How It Works
 
-```sh
-npx turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
+1. The **React app** (`apps/react`) exposes its `App` component as a federated module via `@originjs/vite-plugin-federation` with the identifier `./ReactApp`.
+2. The **Vue app** (`apps/vue`) is configured as the host shell. It declares `react_app` as a remote in `vite.config.ts`, pointing to the React app's `remoteEntry.js`.
+3. `ReactWrapper.vue` dynamically imports `react_app/ReactApp` and renders it inside a Vue component using `React.createElement` and `ReactDOM.createRoot`.
+4. The view at `/` (defined with Vue Router) renders `<ReactWrapper />`, seamlessly embedding the React micro-frontend inside the Vue shell.
 
-### Develop
+## Useful Commands
 
-To develop all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo dev
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo dev
-pnpm exec turbo dev
-pnpm exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo dev --filter=web
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo login
-pnpm exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-pnpm exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+| Command          | Description                        |
+| ---------------- | ---------------------------------- |
+| `pnpm dev`       | Start all apps in dev mode         |
+| `pnpm build`     | Build all apps and packages        |
+| `pnpm preview`   | Preview production builds          |
+| `pnpm check-types` | Run TypeScript type checking     |
+| `pnpm format`    | Format code with Prettier          |
