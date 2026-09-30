@@ -1,4 +1,4 @@
 <template>
-  <div class="text-amber-300">asd</div>
+  <div>asd</div>
 </template>
 <style scoped></style>

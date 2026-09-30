@@ -9,7 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@nuxt/ui": "^4.8.0",
     "tailwindcss": "^4.3.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
