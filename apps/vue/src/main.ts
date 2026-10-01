@@ -1,5 +1,6 @@
 import { createApp } from "vue";
 import { createMemoryHistory, createRouter } from "vue-router";
+import ui from "@nuxt/ui/vue-plugin";
 
 import "./style.css";
 import App from "./App.vue";
@@ -18,5 +19,6 @@ const router = createRouter({
 });
 
 app.use(router);
+app.use(ui);
 
 app.mount("#app");

@@ -1,0 +1,22 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@source "./src";
+
+:root {
+  --ui-radius: 0.5rem;
+}
+
+@theme static {
+  --color-walid-50: #fff7ed;
+  --color-walid-100: #ffedd5;
+  --color-walid-200: #fed7aa;
+  --color-walid-300: #fdba74;
+  --color-walid-400: #fb923c;
+  --color-walid-500: #f97316;
+  --color-walid-600: #ea580c;
+  --color-walid-700: #c2410c;
+  --color-walid-800: #9a3412;
+  --color-walid-900: #7c2d12;
+  --color-walid-950: #431407;
+}
