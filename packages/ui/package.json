@@ -12,10 +12,19 @@
       "types": "./src/theme.d.ts",
       "import": "./src/theme.js"
     },
-    "./theme.css": "./theme.css"
+    "./theme.css": "./theme.css",
+    "./vue-styles.css": "./vue-styles.css"
   },
   "peerDependencies": {
     "@nuxt/ui": "^4.11.2",
     "vue": "^3.5.43"
+  },
+  "peerDependenciesMeta": {
+    "vue": {
+      "optional": true
+    },
+    "@nuxt/ui": {
+      "optional": true
+    }
   }
 }

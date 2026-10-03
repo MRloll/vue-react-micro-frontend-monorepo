@@ -1,12 +1,8 @@
-@import "tailwindcss";
-@import "@nuxt/ui";
-
 @source "./src";
-
-:root {
-  --ui-radius: 0.5rem;
+body,
+html {
+  background-color: #0f172b;
 }
-
 @theme static {
   --color-walid-50: #fff7ed;
   --color-walid-100: #ffedd5;
