@@ -1,5 +1,9 @@
 <script setup lang="ts">
-  defineProps<{ eyebrow: string; href: string; linkLabel: string }>();
+  const { eyebrow, href, linkLabel } = defineProps<{
+    eyebrow: string;
+    href: string;
+    linkLabel: string;
+  }>();
 </script>
 
 <template>

@@ -13,18 +13,15 @@
 
   defineOptions({ inheritAttrs: false });
 
-  withDefaults(
-    defineProps<{
-      color?: UiColor;
-      variant?: UiVariant;
-      size?: UiSize;
-    }>(),
-    {
-      color: "primary",
-      variant: "solid",
-      size: "md",
-    },
-  );
+  const {
+    color = "primary",
+    variant = "solid",
+    size = "md",
+  } = defineProps<{
+    color?: UiColor;
+    variant?: UiVariant;
+    size?: UiSize;
+  }>();
 </script>
 
 <template>

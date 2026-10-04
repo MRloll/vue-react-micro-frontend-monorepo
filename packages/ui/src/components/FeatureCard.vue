@@ -1,14 +1,11 @@
 <script setup lang="ts">
-  withDefaults(
-    defineProps<{
-      number: string;
-      title: string;
-      description: string;
-      tone?: "cream" | "dark" | "surface";
-      outlined?: boolean;
-    }>(),
-    { tone: "cream", outlined: false },
-  );
+  const { tone = "cream", outlined = false } = defineProps<{
+    number: string;
+    title: string;
+    description: string;
+    tone?: "cream" | "dark" | "surface";
+    outlined?: boolean;
+  }>();
 </script>
 
 <template>

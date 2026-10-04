@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  withDefaults(defineProps<{ href?: string; small?: boolean }>(), {
-    href: "#top",
-    small: false,
-  });
+  const { href = "#top", small = false } = defineProps<{
+    href?: string;
+    small?: boolean;
+  }>();
 </script>
 
 <template>
