@@ -1,9 +1,16 @@
 @source "./src";
-body,
-html {
-  background-color: #0f172b;
-}
 @theme static {
+  --color-learnly-brand: var(--color-walid-500);
+  --color-learnly-brand-glow: var(--color-walid-400);
+  --color-learnly-navy: #111827;
+  --color-learnly-ink: #1f2937;
+  --color-learnly-muted: #64748b;
+  --color-learnly-cream: var(--color-walid-50);
+  --color-learnly-peach: var(--color-walid-200);
+  --color-learnly-line: #e2e8f0;
+  --color-learnly-surface: #ffffff;
+  --color-learnly-on-dark: #cbd5e1;
+  --color-learnly-muted-on-dark: #94a3b8;
   --color-walid-50: #fff7ed;
   --color-walid-100: #ffedd5;
   --color-walid-200: #fed7aa;
