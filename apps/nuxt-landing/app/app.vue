@@ -1,8 +1,14 @@
 <template>
-  <UApp class="p-6">
-    <h1 class="bg-walid-500">asdasdasd</h1>
-    <AppButton color="walid">Shared UI button</AppButton>
-    <UButton color="walid">Shared UI button</UButton>
-    <UAvatar src="https://github.com/benjamincanac.png" />
+  <UApp>
+    <div class="overflow-hidden bg-learnly-cream font-sans text-learnly-ink">
+      <main id="top">
+        <LearnlyHero />
+        <LearnlyStory />
+        <LearnlyMethod />
+        <LearnlyTestimonial />
+        <LearnlyCallToAction />
+      </main>
+      <LearnlyFooter />
+    </div>
   </UApp>
 </template>
