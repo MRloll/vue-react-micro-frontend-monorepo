@@ -5,7 +5,7 @@
 
 <template>
   <ReactWrapper :load="() => import('react_app/AsideComponent')" />
-  <h1 class="bg-walid-500">asdasdasd</h1>
+  <h1 class="dark:bg-walid-500">walid</h1>
   <AppButton color="walid">Shared UI button</AppButton>
   <UButton color="walid">Shared UI button</UButton>
   <UAvatar src="https://github.com/benjamincanac.png" />

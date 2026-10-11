@@ -1,6 +1,6 @@
 # `@repo/ui`
 
-Shared Tailwind theme for React, Vue, and Nuxt, plus Vue components and Nuxt UI configuration.
+Shared Tailwind theme for Vue and Nuxt, plus Vue components and Nuxt UI configuration.
 
 ## Components
 
@@ -35,15 +35,12 @@ Reusable building blocks are available to both Nuxt and Vue:
 
 ## Theme
 
-`theme.css` contains the shared palette as Tailwind theme tokens and scans the package's components with `@source`. The landing palette uses `learnly-*` utilities such as `bg-learnly-cream`, `text-learnly-navy`, and `bg-learnly-brand`; orange aliases reuse the existing `walid` scale. The palette uses a prefix to avoid collisions with the React app's semantic colors. React imports Tailwind directly in `src/index.css` so tools such as the shadcn CLI can detect its Tailwind v4 setup:
+`theme.css` is the shared source of truth for the `walid` brand palette and the Learnly semantic tokens. It defines light values in `:root`, dark overrides under `.dark`, and `learnly-*` Tailwind utilities with `@theme inline`. Shared components can use tokens such as `bg-learnly-background`, `text-learnly-foreground`, `bg-learnly-surface`, and `bg-learnly-brand`; existing landing aliases like `bg-learnly-cream` and `text-learnly-navy` also adapt to dark mode.
 
-```css
-@import "tailwindcss";
-@import "@repo/ui/theme.css";
-```
+The theme only changes to dark mode when the consuming Vue or Nuxt app adds `.dark` to the root `<html>` element.
 
 Vue imports `@repo/ui/vue-styles.css` in its global stylesheet. Nuxt registers that same entry in `nuxt.config.ts`'s `css` array. This entry imports Tailwind, Nuxt UI styles, and the shared theme.
 
-`sharedUiConfig` is consumed by Nuxt's `app.config.ts` and the Vue app's `@nuxt/ui/vite` plugin.
+`sharedUiConfig` maps Nuxt UI's `primary` semantic color to the shared `walid` palette. It is consumed by Nuxt's `app.config.ts` and the Vue app's `@nuxt/ui/vite` plugin.
 
-This package declares `@nuxt/ui` and `vue` as optional peer dependencies. Vue and Nuxt applications install their own compatible versions. React consumes the CSS entry without importing the Vue components.
+This package declares `@nuxt/ui` and `vue` as optional peer dependencies. Vue and Nuxt applications install their own compatible versions. The React app owns its Shadcn theme in `apps/react/src/index.css` and has no dependency on this package.
