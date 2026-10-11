@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import ReactWrapper from "../ReactWrapper.vue";
+  import RemoteFeature from "../RemoteFeature.vue";
   import { AppButton } from "@repo/ui";
 </script>
 
@@ -8,5 +8,5 @@
   <AppButton color="walid">Shared UI button</AppButton>
   <UButton color="walid">Shared UI button</UButton>
   <UAvatar src="https://github.com/benjamincanac.png" />
-  <ReactWrapper />
+  <RemoteFeature />
 </template>
