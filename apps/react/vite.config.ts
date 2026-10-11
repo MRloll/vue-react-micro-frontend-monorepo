@@ -18,7 +18,8 @@ export default defineConfig({
       name: "react_app",
       filename: "remoteEntry.js",
       exposes: {
-        "./ReactApp": "./src/App",
+        "./NavBarComponent": "./src/Components/NavBar",
+        "./AsideComponent": "./src/Components/Aside",
       },
       shared: ["react", "react-dom"],
     }),

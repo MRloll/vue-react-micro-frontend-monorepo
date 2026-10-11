@@ -1,23 +1,39 @@
 <script setup lang="ts">
   import { onMounted, onUnmounted, ref } from "vue";
-  import React from "react";
-  import ReactDOM from "react-dom/client";
+  import { createElement, type ComponentType } from "react";
+  import { createRoot, type Root } from "react-dom/client";
 
-  const container = ref<HTMLDivElement>();
-  let root: ReactDOM.Root | null = null;
+  type RemoteModule = {
+    default: ComponentType<any>;
+  };
+
+  const props = defineProps<{
+    load: () => Promise<RemoteModule>;
+  }>();
+
+  const target = ref<HTMLDivElement>();
+  let root: Root | undefined;
+  let disposed = false;
 
   onMounted(async () => {
-    const module = await import("react_app/ReactApp");
-    const Component = module.default;
-    root = ReactDOM.createRoot(container.value!);
-    root.render(React.createElement(Component));
+    try {
+      const { default: Component } = await props.load();
+
+      if (disposed || !target.value) return;
+
+      root = createRoot(target.value);
+      root.render(createElement(Component));
+    } catch (error) {
+      console.error("Failed to load React component", error);
+    }
   });
 
   onUnmounted(() => {
+    disposed = true;
     root?.unmount();
   });
 </script>
 
 <template>
-  <div ref="container"></div>
+  <div ref="target" />
 </template>
