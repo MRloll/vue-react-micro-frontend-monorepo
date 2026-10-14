@@ -5,9 +5,9 @@
 
 <template>
   <ReactWrapper :load="() => import('react_app/AsideComponent')" />
-  <h1 class="dark:bg-walid-500">walid</h1>
-  <AppButton color="walid">Shared UI button</AppButton>
-  <UButton color="walid">Shared UI button</UButton>
+  <h1 class="dark:bg-primary-500">walid</h1>
+  <AppButton color="primary">Shared UI button</AppButton>
+  <UButton color="primary">Shared UI button</UButton>
   <UAvatar src="https://github.com/benjamincanac.png" />
   <ReactWrapper :load="() => import('react_app/NavBarComponent')" />
 </template>

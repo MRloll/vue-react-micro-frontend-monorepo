@@ -11,7 +11,7 @@
     :href="href"
     class="inline-flex items-center justify-center text-[13px] font-extrabold whitespace-nowrap text-learnly-surface no-underline"
     :class="[
-      tone === 'dark' ? 'bg-learnly-navy' : 'bg-learnly-brand',
+      tone === 'dark' ? 'bg-learnly-navy' : 'bg-primary',
       small
         ? 'rounded-[10px] px-[18px] py-[11px]'
         : 'rounded-[11px] px-5 py-3.5',

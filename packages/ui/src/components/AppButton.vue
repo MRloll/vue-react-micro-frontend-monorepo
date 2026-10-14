@@ -6,8 +6,7 @@
     | "info"
     | "warning"
     | "error"
-    | "neutral"
-    | "walid";
+    | "neutral";
   type UiVariant = "solid" | "outline" | "soft" | "subtle" | "ghost" | "link";
   type UiSize = "xs" | "sm" | "md" | "lg" | "xl";
 

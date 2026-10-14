@@ -1,26 +1,17 @@
 export const sharedUiTheme = {
-  colors: [
-    "primary",
-    "secondary",
-    "success",
-    "info",
-    "warning",
-    "error",
-    "walid",
-  ],
+  colors: ["primary", "secondary", "success", "info", "warning", "error"],
 };
 
 export const sharedUiConfig = {
   colors: {
-    primary: "walid",
+    primary: "primary",
     secondary: "blue",
     success: "green",
     info: "blue",
     warning: "yellow",
     error: "red",
     neutral: "slate",
-    walid: "orange",
   },
 };
 
-export const colorMode = true;
+export const colorMode = false;

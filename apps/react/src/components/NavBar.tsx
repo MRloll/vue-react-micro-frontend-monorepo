@@ -11,7 +11,7 @@ const user: user = {
 const NavBar = () => {
   return (
     <div>
-      <div className="dark:bg-walid-500 flex flex-col items-center justify-center h-16">
+      <div className="dark:bg-primary-500 flex flex-col items-center justify-center h-16">
         <h1>{user.name}</h1>
         <h1>{user.email}</h1>
       </div>

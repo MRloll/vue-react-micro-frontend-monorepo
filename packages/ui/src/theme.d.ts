@@ -4,14 +4,13 @@ export declare const sharedUiTheme: {
 
 export declare const sharedUiConfig: {
   readonly colors: {
-    readonly primary: "walid";
+    readonly primary: "primary";
     readonly secondary: "blue";
     readonly success: "green";
     readonly info: "blue";
     readonly warning: "yellow";
     readonly error: "red";
     readonly neutral: "slate";
-    readonly walid: "orange";
   };
 };
 

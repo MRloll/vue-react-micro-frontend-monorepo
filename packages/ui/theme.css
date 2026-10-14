@@ -1,43 +1,43 @@
 /* Raw brand palette. Keep these values stable across light and dark modes. */
 @theme static {
-  --color-walid-50: #fff7ed;
-  --color-walid-100: #ffedd5;
-  --color-walid-200: #fed7aa;
-  --color-walid-300: #fdba74;
-  --color-walid-400: #fb923c;
-  --color-walid-500: #f97316;
-  --color-walid-600: #ea580c;
-  --color-walid-700: #c2410c;
-  --color-walid-800: #9a3412;
-  --color-walid-900: #7c2d12;
-  --color-walid-950: #431407;
+  --color-primary-50: #fff7ed;
+  --color-primary-100: #ffedd5;
+  --color-primary-200: #fed7aa;
+  --color-primary-300: #fdba74;
+  --color-primary-400: #fb923c;
+  --color-primary-500: #f97316;
+  --color-primary-600: #ea580c;
+  --color-primary-700: #c2410c;
+  --color-primary-800: #9a3412;
+  --color-primary-900: #7c2d12;
+  --color-primary-950: #431407;
 }
 
 /* Semantic tokens used by shared UI components and app-specific adapters. */
 :root {
   color-scheme: light;
 
-  --learnly-background: var(--color-walid-50);
+  --learnly-background: var(--color-primary-50);
   --learnly-foreground: #111827;
   --learnly-surface: #ffffff;
   --learnly-surface-foreground: #111827;
-  --learnly-brand: var(--color-walid-700);
+  --learnly-brand: var(--color-primary-400);
   --learnly-brand-foreground: #ffffff;
-  --learnly-brand-glow: var(--color-walid-400);
-  --learnly-secondary: var(--color-walid-100);
-  --learnly-secondary-foreground: var(--color-walid-900);
+  --learnly-brand-glow: var(--color-primary-400);
+  --learnly-secondary: var(--color-primary-100);
+  --learnly-secondary-foreground: var(--color-primary-900);
   --learnly-muted-surface: #f1f5f9;
   --learnly-muted: #64748b;
-  --learnly-accent: var(--color-walid-200);
-  --learnly-accent-foreground: var(--color-walid-900);
+  --learnly-accent: var(--color-primary-200);
+  --learnly-accent-foreground: var(--color-primary-900);
   --learnly-destructive: #b91c1c;
   --learnly-line: #e2e8f0;
   --learnly-input: #e2e8f0;
-  --learnly-ring: var(--color-walid-700);
+  --learnly-ring: var(--color-primary-700);
 
-  --learnly-chart-1: var(--color-walid-700);
-  --learnly-chart-2: var(--color-walid-500);
-  --learnly-chart-3: var(--color-walid-300);
+  --learnly-chart-1: var(--color-primary-700);
+  --learnly-chart-2: var(--color-primary-500);
+  --learnly-chart-3: var(--color-primary-300);
   --learnly-chart-4: #64748b;
   --learnly-chart-5: #334155;
 
@@ -53,8 +53,8 @@
   /* Backwards-compatible Learnly aliases used by the landing components. */
   --learnly-navy: #111827;
   --learnly-ink: #1f2937;
-  --learnly-cream: var(--color-walid-50);
-  --learnly-peach: var(--color-walid-200);
+  --learnly-cream: var(--color-primary-50);
+  --learnly-peach: var(--color-primary-200);
   --learnly-on-dark: #cbd5e1;
   --learnly-muted-on-dark: #94a3b8;
 }
@@ -66,9 +66,9 @@
   --learnly-foreground: #f8fafc;
   --learnly-surface: #1f2937;
   --learnly-surface-foreground: #f8fafc;
-  --learnly-brand: var(--color-walid-400);
+  --learnly-brand: var(--color-primary-400);
   --learnly-brand-foreground: #111827;
-  --learnly-brand-glow: var(--color-walid-300);
+  --learnly-brand-glow: var(--color-primary-300);
   --learnly-secondary: #334155;
   --learnly-secondary-foreground: #ffedd5;
   --learnly-muted-surface: #273449;
@@ -78,22 +78,22 @@
   --learnly-destructive: #ef4444;
   --learnly-line: #334155;
   --learnly-input: #334155;
-  --learnly-ring: var(--color-walid-400);
+  --learnly-ring: var(--color-primary-400);
 
-  --learnly-chart-1: var(--color-walid-400);
-  --learnly-chart-2: var(--color-walid-300);
-  --learnly-chart-3: var(--color-walid-600);
+  --learnly-chart-1: var(--color-primary-400);
+  --learnly-chart-2: var(--color-primary-300);
+  --learnly-chart-3: var(--color-primary-600);
   --learnly-chart-4: #94a3b8;
   --learnly-chart-5: #475569;
 
   --learnly-sidebar: #0b1220;
   --learnly-sidebar-foreground: #f8fafc;
-  --learnly-sidebar-primary: var(--color-walid-400);
+  --learnly-sidebar-primary: var(--color-primary-400);
   --learnly-sidebar-primary-foreground: #111827;
   --learnly-sidebar-accent: #1f2937;
   --learnly-sidebar-accent-foreground: #e2e8f0;
   --learnly-sidebar-border: #334155;
-  --learnly-sidebar-ring: var(--color-walid-400);
+  --learnly-sidebar-ring: var(--color-primary-400);
 
   --learnly-navy: #f8fafc;
   --learnly-ink: #e2e8f0;

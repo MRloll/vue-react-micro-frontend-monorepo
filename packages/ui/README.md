@@ -35,12 +35,12 @@ Reusable building blocks are available to both Nuxt and Vue:
 
 ## Theme
 
-`theme.css` is the shared source of truth for the `walid` brand palette and the Learnly semantic tokens. It defines light values in `:root`, dark overrides under `.dark`, and `learnly-*` Tailwind utilities with `@theme inline`. Shared components can use tokens such as `bg-learnly-background`, `text-learnly-foreground`, `bg-learnly-surface`, and `bg-learnly-brand`; existing landing aliases like `bg-learnly-cream` and `text-learnly-navy` also adapt to dark mode.
+`theme.css` is the shared source of truth for the `primary` palette and the Learnly semantic tokens. It defines light values in `:root`, dark overrides under `.dark`, and `learnly-*` Tailwind utilities with `@theme inline`. Shared components can use tokens such as `bg-learnly-background`, `text-learnly-foreground`, `bg-learnly-surface`, and `bg-learnly-brand`; existing landing aliases like `bg-learnly-cream` and `text-learnly-navy` also adapt to dark mode.
 
 The theme only changes to dark mode when the consuming Vue or Nuxt app adds `.dark` to the root `<html>` element.
 
 Vue imports `@repo/ui/vue-styles.css` in its global stylesheet. Nuxt registers that same entry in `nuxt.config.ts`'s `css` array. This entry imports Tailwind, Nuxt UI styles, and the shared theme.
 
-`sharedUiConfig` maps Nuxt UI's `primary` semantic color to the shared `walid` palette. It is consumed by Nuxt's `app.config.ts` and the Vue app's `@nuxt/ui/vite` plugin.
+`sharedUiConfig` uses the shared `primary` palette for Nuxt UI's `primary` semantic color. It is consumed by Nuxt's `app.config.ts` and the Vue app's `@nuxt/ui/vite` plugin.
 
 This package declares `@nuxt/ui` and `vue` as optional peer dependencies. Vue and Nuxt applications install their own compatible versions. The React app owns its Shadcn theme in `apps/react/src/index.css` and has no dependency on this package.
