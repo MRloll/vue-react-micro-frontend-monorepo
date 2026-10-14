@@ -1,6 +1,4 @@
 <script setup lang="ts">
-  import { BrandLogo, PageContainer } from "@repo/ui";
-
   const groups = [
     {
       title: "Product",

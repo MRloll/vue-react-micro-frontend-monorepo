@@ -1,7 +1,3 @@
-<script setup lang="ts">
-  import { PageContainer } from "@repo/ui";
-</script>
-
 <template>
   <section id="testimonial" class="bg-learnly-navy text-learnly-surface">
     <PageContainer

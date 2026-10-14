@@ -1,12 +1,7 @@
-<script setup lang="ts">
-  import { ActionLink, PageContainer } from "@repo/ui";
-  import LearnlyDashboardPreview from "./LearnlyDashboardPreview.vue";
-</script>
-
 <template>
   <section>
     <PageContainer
-      class="flex min-h-[492px] items-center gap-10 pt-11 pb-7 max-[900px]:block max-[900px]:pt-[52px]"
+      class="flex min-h-[492px] items-center justify-between gap-10 pt-11 pb-7 max-[900px]:block max-[900px]:pt-[52px]"
     >
       <div class="w-1/2 max-w-[600px] max-[900px]:w-full">
         <p

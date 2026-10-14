@@ -1,6 +1,4 @@
 <script setup lang="ts">
-  import { FeatureCard, PageContainer, SectionHeading } from "@repo/ui";
-
   const steps = [
     {
       number: "01",

@@ -1,25 +1,20 @@
 <script setup lang="ts">
-  import { FeatureCard, PageContainer, SectionHeading } from "@repo/ui";
-
   const features = [
     {
       number: "01",
       title: "One clear path",
       description: "Your courses, goals, and next steps in one calm view.",
-      tone: "dark",
     },
     {
       number: "02",
       title: "Practice that sticks",
       description:
         "Turn passive watching into active recall and real confidence.",
-      tone: "surface",
     },
     {
       number: "03",
       title: "Momentum, measured",
       description: "Celebrate the tiny wins that add up to a new capability.",
-      tone: "surface",
     },
   ] as const;
 </script>

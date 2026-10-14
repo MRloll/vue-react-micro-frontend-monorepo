@@ -1,7 +1,3 @@
-<script setup lang="ts">
-  import { ActionLink, BrandLogo, PageContainer } from "@repo/ui";
-</script>
-
 <template>
   <header>
     <PageContainer

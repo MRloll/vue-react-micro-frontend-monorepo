@@ -1,7 +1,3 @@
-<script setup lang="ts">
-  import { ActionLink, PageContainer } from "@repo/ui";
-</script>
-
 <template>
   <section id="cta" class="bg-learnly-peach">
     <PageContainer
