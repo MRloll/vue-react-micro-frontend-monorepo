@@ -11,9 +11,6 @@ export default defineConfig({
     ui({
       ui: sharedUiConfig,
       theme: sharedUiTheme,
-      experimental: {
-        componentDetection: ["Button"],
-      },
       colorMode: colorMode,
     }),
     federation({
@@ -21,7 +18,7 @@ export default defineConfig({
       remotes: {
         react_app: "http://localhost:5174/assets/remoteEntry.js",
       },
-      shared: ["vue", "react", "react-dom"],
+      shared: ["react", "react-dom"],
     }),
   ],
   build: {
