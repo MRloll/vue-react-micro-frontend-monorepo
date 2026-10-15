@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { AppButton } from "@repo/ui";
-
 const stats = [
   {
     label: "Courses in progress",

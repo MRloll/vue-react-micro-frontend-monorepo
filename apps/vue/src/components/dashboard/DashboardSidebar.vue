@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { AppButton } from "@repo/ui";
-
-defineProps<{
+  defineProps<{
     open: boolean;
   }>();
 

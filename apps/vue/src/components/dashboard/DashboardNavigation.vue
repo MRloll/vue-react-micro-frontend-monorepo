@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { AppButton, BrandLogo } from "@repo/ui";
-
 const emit = defineEmits<{
   "toggle-sidebar": [];
 }>();
