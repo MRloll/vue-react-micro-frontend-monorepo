@@ -18,8 +18,7 @@ export default defineConfig({
       name: "react_app",
       filename: "remoteEntry.js",
       exposes: {
-        "./NavBarComponent": "./src/Components/NavBar",
-        "./AsideComponent": "./src/Components/Aside",
+        "./CoursesPage": "./src/components/courses/CoursesPage",
       },
       shared: ["react", "react-dom"],
     }),
@@ -31,9 +30,11 @@ export default defineConfig({
   },
   server: {
     port: 5174,
+    strictPort: true,
     cors: true,
   },
   preview: {
-    port: 5174,
+    port: 5175,
+    strictPort: true,
   },
 });

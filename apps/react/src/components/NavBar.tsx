@@ -11,14 +11,14 @@ const user: user = {
 const NavBar = () => {
   return (
     <div>
-      <div className="dark:bg-primary-500 flex flex-col items-center justify-center h-16">
+      <div className="rx:dark:bg-learnly-brand rx:flex rx:flex-col rx:items-center rx:justify-center rx:h-16">
         <h1>{user.name}</h1>
         <h1>{user.email}</h1>
       </div>
-      <div className="flex flex-wrap items-center gap-2 md:flex-row ">
+      <div className="rx:flex rx:flex-wrap rx:items-center rx:gap-2 rx:md:flex-row ">
         <Button variant="destructive">Button</Button>
         <Button
-          className="bg-orange-500"
+          className="rx:bg-learnly-brand"
           variant="ghost"
           size="icon"
           aria-label="Submit"

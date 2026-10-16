@@ -1,6 +1,17 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
-@import "@fontsource-variable/inter";
-
+@import "tailwindcss" prefix(rx);
 @import "@repo/ui/theme.css";
+
+/* Keep shared semantic tokens compatible with Tailwind's prefixed palette. */
+:root {
+  --color-primary-50: var(--rx-color-primary-50);
+  --color-primary-100: var(--rx-color-primary-100);
+  --color-primary-200: var(--rx-color-primary-200);
+  --color-primary-300: var(--rx-color-primary-300);
+  --color-primary-400: var(--rx-color-primary-400);
+  --color-primary-500: var(--rx-color-primary-500);
+  --color-primary-600: var(--rx-color-primary-600);
+  --color-primary-700: var(--rx-color-primary-700);
+  --color-primary-800: var(--rx-color-primary-800);
+  --color-primary-900: var(--rx-color-primary-900);
+  --color-primary-950: var(--rx-color-primary-950);
+}

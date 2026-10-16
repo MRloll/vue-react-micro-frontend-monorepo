@@ -149,6 +149,7 @@
 
 @layer base {
   body {
-    @apply bg-learnly-background text-learnly-foreground;
+    background-color: var(--learnly-background);
+    color: var(--learnly-foreground);
   }
 }

@@ -1,10 +1,10 @@
-import NavBar from "./components/NavBar";
+import CoursesPage from "@/components/courses/CoursesPage";
 
 function App() {
   return (
-    <div>
-      <NavBar />
-    </div>
+    <>
+      <CoursesPage />
+    </>
   );
 }
 
