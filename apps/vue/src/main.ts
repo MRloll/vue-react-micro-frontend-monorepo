@@ -1,6 +1,6 @@
 import { createApp } from "vue";
-import { createWebHistory, createRouter } from "vue-router";
 import ui from "@nuxt/ui/vue-plugin";
+import router from "./router";
 import {
   ActionLink,
   AppButton,
@@ -9,22 +9,9 @@ import {
   PageContainer,
   SectionHeading,
 } from "@repo/ui";
-import index from "./views/index.vue";
 import "./style.css";
 import App from "./App.vue";
 const app = createApp(App);
-
-const routes = [
-  {
-    path: "/",
-    component: index,
-  },
-];
-
-const router = createRouter({
-  history: createWebHistory(),
-  routes,
-});
 
 app.use(router);
 app.use(ui);

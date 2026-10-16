@@ -8,9 +8,18 @@
   }>();
 
   const learningLinks = [
-    { label: "Overview", icon: "i-lucide-layout-dashboard", active: true },
-    { label: "My Courses", icon: "i-lucide-book-open", active: false },
-    { label: "Assignments", icon: "i-lucide-clipboard-check", active: false },
+    { label: "Overview", icon: "i-lucide-layout-dashboard", to: "/" },
+    {
+      label: "My Courses",
+      icon: "i-lucide-book-open",
+      active: false,
+      to: "/courses",
+    },
+    {
+      label: "Assignments",
+      icon: "i-lucide-clipboard-check",
+      active: false,
+    },
     { label: "Analytics", icon: "i-lucide-chart-bar", active: false },
   ];
 
@@ -60,12 +69,13 @@
         :key="item.label"
         :class="[
           'w-full justify-start gap-3 rounded-lg px-3 py-2.5 text-sm',
-          item.active
+          $route.path == item.to
             ? 'bg-primary-500 text-white hover:bg-primary-600'
             : 'text-slate-300 hover:bg-white/10 hover:text-white',
         ]"
         :color="item.active ? 'primary' : 'neutral'"
         :icon="item.icon"
+        :to="item?.to"
         :variant="item.active ? 'solid' : 'ghost'"
         @click="emit('close')"
       >
