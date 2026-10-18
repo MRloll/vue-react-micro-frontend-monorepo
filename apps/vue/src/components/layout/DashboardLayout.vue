@@ -14,8 +14,10 @@
     <div class="relative flex min-h-[calc(100vh-76px)]">
       <DashboardSidebar :open="sidebarOpen" @close="sidebarOpen = false" />
 
-      <main class="min-w-0 flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-        <DashboardHeader />
+      <main
+        class="flex min-w-0 flex-1 flex-col px-4 py-6 sm:px-6 lg:px-8 lg:py-8"
+      >
+        <DashboardHeader v-if="!$route.meta.hideDashboardHeader" />
         <slot />
       </main>
     </div>

@@ -1,1 +1,5 @@
 @import "@repo/ui/vue-styles.css";
+
+@theme {
+  --font-sans: "Inter Variable", Inter, sans-serif;
+}

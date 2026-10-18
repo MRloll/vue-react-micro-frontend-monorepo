@@ -6,6 +6,10 @@ import federation from "@originjs/vite-plugin-federation";
 
 // https://vite.dev/config/
 export default defineConfig({
+  // Federation loads shared packages dynamically, outside Vite's import scan.
+  optimizeDeps: {
+    include: ["react", "react-dom", "react-dom/client"],
+  },
   plugins: [
     vue(),
     ui({

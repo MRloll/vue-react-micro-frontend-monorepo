@@ -19,6 +19,7 @@
       label: "Assignments",
       icon: "i-lucide-clipboard-check",
       active: false,
+      to: "/assignments",
     },
     { label: "Analytics", icon: "i-lucide-chart-bar", active: false },
   ];
@@ -73,10 +74,10 @@
             ? 'bg-primary-500 text-white hover:bg-primary-600'
             : 'text-slate-300 hover:bg-white/10 hover:text-white',
         ]"
-        :color="item.active ? 'primary' : 'neutral'"
+        :color="$route.path === item.to ? 'primary' : 'neutral'"
         :icon="item.icon"
         :to="item?.to"
-        :variant="item.active ? 'solid' : 'ghost'"
+        :variant="$route.path === item.to ? 'solid' : 'ghost'"
         @click="emit('close')"
       >
         {{ item.label }}
@@ -105,17 +106,17 @@
       </AppButton>
     </nav>
 
-    <div class="mt-auto rounded-xl border border-slate-700 bg-slate-800/70 p-3">
-      <p class="text-xs leading-5 text-slate-300">
+    <div class="mt-2 flex flex-col items-start gap-2 px-3.5 py-[18px]">
+      <p class="text-xs leading-[15px] text-slate-300">
         Keep your learning momentum going.
       </p>
       <AppButton
-        class="mt-3 w-full justify-center rounded-lg border-slate-600 text-xs text-white hover:bg-white/10"
+        class="justify-center rounded-full bg-slate-700 px-3 py-[7px] text-xs leading-[15px] font-normal text-slate-50 hover:bg-slate-600"
         color="neutral"
         href="#plan"
         label="View plan"
         size="xs"
-        variant="outline"
+        variant="solid"
       />
     </div>
   </aside>

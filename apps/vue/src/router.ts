@@ -14,6 +14,11 @@ const routes: RouteRecordRaw[] = [
     path: "/courses",
     component: () => import("./views/Courses.vue"),
   },
+  {
+    path: "/assignments",
+    component: () => import("./views/Assignments.vue"),
+    meta: { hideDashboardHeader: true },
+  },
 ];
 
 const router = createRouter({
