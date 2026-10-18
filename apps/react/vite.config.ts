@@ -19,6 +19,7 @@ export default defineConfig({
       filename: "remoteEntry.js",
       exposes: {
         "./CoursesPage": "./src/components/courses/CoursesPage",
+        "./AssignmentsPage": "./src/components/assignments/AssignmentsPage",
       },
       shared: ["react", "react-dom"],
     }),

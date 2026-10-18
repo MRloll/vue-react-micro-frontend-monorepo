@@ -1,8 +1,19 @@
 @import "tailwindcss" prefix(rx);
+@import "@fontsource-variable/inter";
 @import "@repo/ui/theme.css";
+
+@theme {
+  --font-sans: "Inter Variable", Inter, sans-serif;
+}
 
 /* Keep shared semantic tokens compatible with Tailwind's prefixed palette. */
 :root {
+  --assignment-review: #8b5cf6;
+  --assignment-submitted: #10b981;
+  --assignment-info: #3b82f6;
+  --assignment-info-surface: #eff6ff;
+  --assignment-alert: #ef4444;
+  --assignment-alert-surface: #fef2f2;
   --color-primary-50: var(--rx-color-primary-50);
   --color-primary-100: var(--rx-color-primary-100);
   --color-primary-200: var(--rx-color-primary-200);
