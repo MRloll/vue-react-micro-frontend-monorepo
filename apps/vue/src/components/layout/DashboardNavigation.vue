@@ -1,7 +1,8 @@
 <script setup lang="ts">
-  const emit = defineEmits<{
-    "toggle-sidebar": [];
-  }>();
+import LearningQueue from "./LearningQueue.vue";
+const emit = defineEmits<{
+  "toggle-sidebar": [];
+}>();
 </script>
 
 <template>
@@ -25,6 +26,7 @@
     </div>
 
     <div class="flex items-center gap-2 sm:gap-4">
+      <LearningQueue />
       <AppButton
         class="hidden text-sm text-slate-500 sm:inline-flex"
         color="neutral"

@@ -1,4 +1,5 @@
-import { ArrowRight } from "lucide-react";
+import { Check, ListPlus } from "lucide-react";
+import type { LearningQueueItem } from "@repo/types";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -17,11 +18,12 @@ import type { CourseCardData } from "../../data/courses";
 
 type CourseCardProps = {
   course: CourseCardData;
+  queued: boolean;
+  onToggleQueue: (course: LearningQueueItem) => void;
 };
 
-function CourseCard({ course }: CourseCardProps) {
+function CourseCard({ course, queued, onToggleQueue }: CourseCardProps) {
   const CourseIcon = course.icon;
-  const actionLabel = course.status === "completed" ? "Review" : "Continue";
 
   return (
     <Card
@@ -67,11 +69,28 @@ function CourseCard({ course }: CourseCardProps) {
           {course.progress}%
         </span>
         <Button
-          className="rx:h-8 rx:rounded-full rx:bg-learnly-brand rx:px-3 rx:text-xs rx:text-learnly-brand-foreground rx:hover:bg-learnly-brand/90"
+          aria-label={
+            queued
+              ? `Remove ${course.title} from learning queue`
+              : `Add ${course.title} to learning queue`
+          }
+          aria-pressed={queued}
+          title={
+            queued
+              ? "Click to remove from your learning queue"
+              : "Plan this course for your next learning session"
+          }
+          variant={queued ? "secondary" : "default"}
+          className="rx:h-8 rx:rounded-full rx:px-3 rx:text-xs"
           type="button"
+          onClick={() => onToggleQueue(course)}
         >
-          {actionLabel}
-          <ArrowRight aria-hidden="true" />
+          {queued ? (
+            <Check aria-hidden="true" />
+          ) : (
+            <ListPlus aria-hidden="true" />
+          )}
+          {queued ? "Queued" : "Add to queue"}
         </Button>
       </CardFooter>
     </Card>

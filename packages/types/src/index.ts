@@ -18,3 +18,14 @@ export interface Course {
   status: CourseStatus;
   saved: boolean;
 }
+
+export type LearningQueueItem = Pick<
+  Course,
+  "id" | "title" | "category" | "lessons" | "progress"
+>;
+
+/** Framework-neutral contract between the Vue host and the React remote. */
+export interface CoursesPageProps {
+  queuedCourseIds?: readonly string[];
+  onToggleQueue?: (course: LearningQueueItem) => void;
+}

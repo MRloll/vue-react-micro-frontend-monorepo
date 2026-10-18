@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import ReactWrapper from "../ReactWrapper.vue";
+  import ReactWrapper from "../ReactWrapper.vue";
 
-const loadAssignments = () => import("react_app/AssignmentsPage");
+  const loadAssignments = () => import("react_app/AssignmentsPage");
 </script>
 
 <template>

@@ -1,5 +1,9 @@
 import { useState } from "react";
-import type { CourseFilter } from "@repo/types";
+import type {
+  CourseFilter,
+  CoursesPageProps,
+  LearningQueueItem,
+} from "@repo/types";
 import CourseCard from "./CourseCard";
 import CourseTabs from "./CourseTabs";
 import { courses } from "@/data/courses";
@@ -13,8 +17,26 @@ const courseFilters: CourseFilter[] = [
   "saved",
 ];
 
-function CoursesPage() {
+function CoursesPage({
+  queuedCourseIds,
+  onToggleQueue,
+}: CoursesPageProps = {}) {
   const [activeTab, setActiveTab] = useState<CourseFilter>("all");
+  // Standalone React preview works without requiring the Vue host or Pinia.
+  const [localQueueIds, setLocalQueueIds] = useState<string[]>([]);
+  const queueIds = queuedCourseIds ?? localQueueIds;
+
+  function toggleQueue(course: LearningQueueItem) {
+    if (onToggleQueue) {
+      onToggleQueue(course);
+      return;
+    }
+    setLocalQueueIds((ids) =>
+      ids.includes(course.id)
+        ? ids.filter((id) => id !== course.id)
+        : [...ids, course.id],
+    );
+  }
 
   const visibleCourses = courses.filter((course) => {
     if (activeTab === "all") return true;
@@ -32,7 +54,7 @@ function CoursesPage() {
   }
 
   return (
-    <main className="rx:min-h-screen">
+    <div>
       <div className="rx:mx-auto rx:flex rx:w-full rx:flex-col rx:gap-5">
         <Tabs value={activeTab} onValueChange={handleTabChange}>
           <CourseTabs />
@@ -40,7 +62,12 @@ function CoursesPage() {
           <TabsContent value={activeTab}>
             <section className="rx:flex rx:flex-col rx:gap-3.5">
               {visibleCourses.map((course) => (
-                <CourseCard key={course.id} course={course} />
+                <CourseCard
+                  key={course.id}
+                  course={course}
+                  queued={queueIds.includes(course.id)}
+                  onToggleQueue={toggleQueue}
+                />
               ))}
             </section>
 
@@ -57,7 +84,7 @@ function CoursesPage() {
           </TabsContent>
         </Tabs>
       </div>
-    </main>
+    </div>
   );
 }
 

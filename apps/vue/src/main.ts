@@ -1,6 +1,7 @@
 import { createApp } from "vue";
 import ui from "@nuxt/ui/vue-plugin";
 import router from "./router";
+import { pinia } from "./stores";
 import {
   ActionLink,
   AppButton,
@@ -13,6 +14,7 @@ import "./style.css";
 import App from "./App.vue";
 const app = createApp(App);
 
+app.use(pinia);
 app.use(router);
 app.use(ui);
 

@@ -1,21 +1,32 @@
-<script setup lang="ts">
-  import { onMounted, onUnmounted, ref } from "vue";
+<script setup lang="ts" generic="TProps extends object = Record<string, never>">
+  import { onMounted, onUnmounted, ref, watch } from "vue";
   import { createElement, type ComponentType } from "react";
   import { createRoot, type Root } from "react-dom/client";
 
   type RemoteModule = {
-    default: ComponentType;
+    default: ComponentType<TProps>;
   };
 
   const props = defineProps<{
     load: () => Promise<RemoteModule>;
+    componentProps?: TProps;
   }>();
 
   const target = ref<HTMLDivElement>();
   const loading = ref(true);
   const loadFailed = ref(false);
   let root: Root | undefined;
+  let remoteComponent: ComponentType<TProps> | undefined;
   let disposed = false;
+
+  function renderRemote() {
+    if (root && remoteComponent) {
+      root.render(createElement(remoteComponent, props.componentProps));
+    }
+  }
+
+  // Host state changes update the existing React root, preserving local UI state.
+  watch(() => props.componentProps, renderRemote, { deep: true });
 
   async function loadRemote() {
     loading.value = true;
@@ -26,7 +37,8 @@
       if (disposed || !target.value) return;
 
       root = createRoot(target.value);
-      root.render(createElement(Component));
+      remoteComponent = Component;
+      renderRemote();
     } catch (error) {
       if (!disposed) loadFailed.value = true;
       console.error("Failed to load React component", error);

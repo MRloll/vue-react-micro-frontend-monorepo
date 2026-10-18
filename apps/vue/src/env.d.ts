@@ -7,7 +7,8 @@ declare module "*.vue" {
 
 declare module "react_app/CoursesPage" {
   import type { ComponentType } from "react";
-  const component: ComponentType;
+  import type { CoursesPageProps } from "@repo/types";
+  const component: ComponentType<CoursesPageProps>;
   export default component;
 }
 
