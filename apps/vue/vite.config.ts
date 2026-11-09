@@ -20,7 +20,7 @@ export default defineConfig({
     federation({
       name: "host_app",
       remotes: {
-        react_app: "http://localhost:5175/assets/remoteEntry.js",
+        react_app: "https://mfend-react.vercel.app/assets/remoteEntry.js",
       },
       shared: ["react", "react-dom"],
     }),
