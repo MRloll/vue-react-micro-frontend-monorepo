@@ -3,3 +3,16 @@
 @theme {
   --font-sans: "Inter Variable", Inter, sans-serif;
 }
+
+.react-component {
+  border: 2px solid rgb(168, 252, 168);
+  padding: 10px;
+  border-radius: 10px;
+  position: relative;
+}
+
+.react-component .chip {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}

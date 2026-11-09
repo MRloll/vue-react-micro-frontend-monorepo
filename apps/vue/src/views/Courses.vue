@@ -13,5 +13,8 @@
 </script>
 
 <template>
-  <ReactWrapper :load="loadCourses" :component-props="courseProps" />
+  <div class="react-component">
+    <UBadge color="success" label="React Page" class="chip" />
+    <ReactWrapper :load="loadCourses" :component-props="courseProps" />
+  </div>
 </template>

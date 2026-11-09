@@ -5,5 +5,8 @@
 </script>
 
 <template>
-  <ReactWrapper :load="loadAssignments" />
+  <div class="react-component">
+    <UBadge color="success" label="React Page" class="chip" />
+    <ReactWrapper :load="loadAssignments" />
+  </div>
 </template>
