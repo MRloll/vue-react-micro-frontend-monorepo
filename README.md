@@ -1,137 +1,170 @@
-# Vue-React Micro Frontend Monorepo
+# Vue + React Micro-Frontend Monorepo
 
-A monorepo demonstrating a micro-frontend architecture using **Vue 3** as the host shell and **React 19** as a remote micro-frontend, connected via **Module Federation** (`@originjs/vite-plugin-federation`) and orchestrated with **Turborepo**.
+This repository is a pnpm/Turborepo workspace containing a Vue dashboard, a React micro-frontend, and a separate Nuxt landing page. The Vue app is the host for the React pages: it loads them at runtime with Module Federation. All apps share selected workspace packages for TypeScript contracts and UI styling.
 
 ## Architecture
 
-```
-┌─────────────────────────────────────┐
-│         Host App (Vue 3)            │
-│  apps/vue  ───  port 5173           │
-│  Vue Router + Nuxt UI               │
-│  Dynamically imports React remote   │
-│  via ReactWrapper.vue               │
-└──────────────┬──────────────────────┘
-               │ Module Federation
-               │ (remoteEntry.js)
-               ▼
-┌─────────────────────────────────────┐
-│       Remote App (React 19)         │
-│  apps/react ───  port 5174          │
-│  Exposes: ./ReactApp                │
-│  Tailwind CSS v4                    │
-└─────────────────────────────────────┘
-
-┌─────────────────────────────────────┐
-│         Shared Packages              │
-│  packages/types       @repo/types   │
-│  packages/typescript-config         │
-└─────────────────────────────────────┘
+```mermaid
+flowchart LR
+  Vue["Vue host · apps/vue"] -->|loads remoteEntry.js| React["React remote · apps/react"]
+  Vue --> Types["@repo/types"]
+  React --> Types
+  Vue --> UI["@repo/ui · Vue components and theme"]
+  Nuxt["Nuxt landing · apps/nuxt-landing"] --> UI
+  React --> Theme["@repo/ui/theme.css · shared design tokens"]
+  UI --> Theme
 ```
 
-## Project Structure
+The Nuxt landing page is a separate app. It shares Vue components and theme assets with the Vue dashboard, but it is not part of the Vue/React Module Federation runtime.
 
+## Applications
+
+| Path | Role | Main details |
+| --- | --- | --- |
+| `apps/vue` | Dashboard host | Vue 3, Vue Router, Pinia, Nuxt UI, and Vite. Routes include `/`, `/courses`, and `/assignments`. Loads React pages on the courses and assignments routes. Dev server: `http://localhost:5173`. |
+| `apps/react` | Remote micro-frontend and standalone preview | React 19, Tailwind CSS 4, and Vite. Exposes `./CoursesPage` and `./AssignmentsPage`. Standalone dev server: `http://localhost:5174`; production preview: `http://localhost:5175`. |
+| `apps/nuxt-landing` | Marketing landing page | Nuxt 4 and Nuxt UI. Shares the UI package with the Vue dashboard. Dev server defaults to `http://localhost:3000`. |
+
+## Workspace packages
+
+| Package | Purpose |
+| --- | --- |
+| `packages/types` (`@repo/types`) | Framework-neutral TypeScript models and props used by the Vue host and React remote. |
+| `packages/ui` (`@repo/ui`) | Shared Vue components, shared Tailwind theme tokens, and Nuxt UI theme configuration. |
+| `packages/typescript-config` (`@repo/typescript-config`) | Base TypeScript configuration extended by app and package tsconfigs. |
+
+The root `pnpm-workspace.yaml` includes every folder under `apps/*` and `packages/*`. Internal package dependencies use `workspace:*` so local changes are consumed directly by the apps.
+
+## Product and source map
+
+- The Vue dashboard provides the overview page and shell layout, navigation, and learning-queue popover. Its router and views are in `apps/vue/src/router.ts` and `apps/vue/src/views/`; the shell components are under `apps/vue/src/components/layout/`.
+- The React courses page provides tabs for all, in-progress, completed, and saved courses. The assignments page provides a course filter and summary. Their components and sample data are under `apps/react/src/components/` and `apps/react/src/data/`.
+- The Nuxt app contains the public landing page sections under `apps/nuxt-landing/app/components/learnly/`. `apps/nuxt-landing/app/plugins/shared-ui.ts` registers shared Vue components globally.
+- The Vue-to-React mounting adapter is `apps/vue/src/ReactWrapper.vue`; Federation host and remote settings live in each app's `vite.config.ts`.
+- Shared contracts live in `packages/types/src/index.ts`. Shared Vue components are exported by `packages/ui/src/index.ts`; its theme and CSS entries are `packages/ui/theme.css` and `packages/ui/vue-styles.css`.
+
+## How Vue and React work together
+
+The React Vite config uses `@originjs/vite-plugin-federation` to expose these modules:
+
+- `react_app/CoursesPage`
+- `react_app/AssignmentsPage`
+
+The Vue Vite config registers `react_app` as a remote. `ReactWrapper.vue` asynchronously imports the requested React module, mounts it with `createRoot`, forwards props, and unmounts the React root when its Vue view is removed. `react` and `react-dom` are declared as shared Federation dependencies.
+
+In the current local setup, the Vue host fetches the React remote entry from:
+
+```text
+http://localhost:5175/assets/remoteEntry.js
 ```
-vue-react-micro-frontend-monorepo/
-├── apps/
-│   ├── vue/                         # Host shell (Vue 3)
-│   │   ├── src/
-│   │   │   ├── App.vue              # Root component with RouterView
-│   │   │   ├── main.ts              # App entry, vue-router setup
-│   │   │   ├── ReactWrapper.vue     # Loads React remote via federation
-│   │   │   ├── views/index.vue      # Home view (renders ReactWrapper)
-│   │   │   ├── assets/
-│   │   │   └── style.css
-│   │   ├── vite.config.ts           # Federation config (host, consumes react_app)
-│   │   └── package.json
-│   │
-│   └── react/                       # Remote micro-frontend (React 19)
-│       ├── src/
-│       │   ├── App.tsx              # Root component (exposed as remote)
-│       │   ├── main.tsx             # Standalone entry
-│       │   ├── components/
-│       │   │   └── NavBar.tsx       # Example component (uses @repo/types)
-│       │   └── index.css
-│       ├── vite.config.ts           # Federation config (remote, exposes ./ReactApp)
-│       └── package.json
-│
-├── packages/
-│   ├── types/                       # @repo/types — shared TypeScript types
-│   │   ├── src/index.ts             # user interface definition
-│   │   └── package.json
-│   │
-│   └── typescript-config/           # @repo/typescript-config — base tsconfig
-│       ├── base.json
-│       └── package.json
-│
-├── package.json                     # Root workspace & turbo scripts
-├── pnpm-workspace.yaml              # Workspace definition (apps/*, packages/*)
-├── turbo.json                       # Turborepo task pipeline
-└── pnpm-lock.yaml
+
+The React dev server on port `5174` is useful for running the React app by itself. The integrated Vue host uses the built remote served by the React preview on port `5175`.
+
+## How data is shared
+
+There are two separate kinds of sharing: TypeScript contracts are shared at build time, while the learning queue is shared at runtime through props and callbacks.
+
+### Shared TypeScript contracts
+
+`packages/types/src/index.ts` defines types such as `Course`, `LearningQueueItem`, `CourseFilter`, and `CoursesPageProps`. Both Vue and React import these types, which keeps the host/remote boundary consistent without making either framework depend on the other's state library.
+
+These are TypeScript types, not a runtime data store. They are erased from the built JavaScript and do not synchronize data by themselves.
+
+### Runtime learning-queue flow
+
+The Vue host owns the learning queue in the Pinia store at `apps/vue/src/stores/learningQueue.ts`. On the courses route, `apps/vue/src/views/Courses.vue` passes two props to the React page:
+
+- `queuedCourseIds`: the course IDs currently in the Vue store.
+- `onToggleQueue`: a callback that sends a selected course back to the Vue store.
+
+`CoursesPageProps` types this bridge. The React `CoursesPage` renders the host-provided IDs and calls the callback when someone adds or removes a course. Pinia remains the owner of the queue, and the Vue `LearningQueue` component displays the same state.
+
+```text
+Vue Pinia store → queuedCourseIds → React CoursesPage
+Vue Pinia store ← onToggleQueue(course) ← React CoursesPage
 ```
 
-## Tech Stack
+When `CoursesPage` runs by itself without host props, it uses a small local React state fallback so the standalone preview remains interactive. The assignments page has its own sample data and local filter state; it does not currently share state with Vue.
 
-| Layer          | Technology                              |
-| -------------- | --------------------------------------- |
-| Monorepo       | Turborepo 2 + pnpm 9                   |
-| Host Shell     | Vue 3 + Vue Router 5 + Nuxt UI 4       |
-| Remote         | React 19 + Tailwind CSS 4              |
-| Federation     | `@originjs/vite-plugin-federation` 1.4 |
-| Build Tool     | Vite 8                                  |
-| Language       | TypeScript ~6.0                        |
+Course and assignment data are sample data held in the React app (`apps/react/src/data`). There is no API, database, or persistence layer in this demo, so the Pinia learning queue resets when the page is reloaded.
 
-## Installation & Setup
+## How Tailwind and the visual theme are shared
 
-### Prerequisites
+The apps share the design tokens, while each app compiles its own CSS for its own framework:
 
-- **Node.js** >= 18
-- **pnpm** >= 9.0.0 (install via `npm install -g pnpm`)
+- `packages/ui/theme.css` is the shared source for the primary palette, semantic `learnly-*` colors, and light/dark CSS variables.
+- Vue imports `@repo/ui/vue-styles.css` through `apps/vue/src/style.css`. That shared entry imports Tailwind, Nuxt UI styles, and the shared theme. Its `@source` directive includes the Vue components in `packages/ui` so their Tailwind classes are generated.
+- Nuxt loads the same `@repo/ui/vue-styles.css` entry from `apps/nuxt-landing/nuxt.config.ts` and uses the shared Nuxt UI theme configuration from `@repo/ui/theme`.
+- React has its own Tailwind entry in `apps/react/src/index.css`. It imports Tailwind with the `rx:` prefix and also imports `@repo/ui/theme.css`, so React can use the same semantic colors with prefixed utilities such as `rx:bg-learnly-brand`.
 
-### Steps
+The `rx:` prefix keeps React's Tailwind utility classes distinct from the unprefixed Vue/Nuxt classes in the host page. React does not consume the shared Vue single-file components: `@repo/ui` components are Vue components for Vue and Nuxt, while React keeps its own React/shadcn components and shares the visual tokens.
+
+## Getting started
+
+### Requirements
+
+- Node.js `20.19+` or `22.12+` (required by Vite 8).
+- pnpm `9+`.
+
+### Install dependencies
 
 ```bash
-# 1. Clone the repository
-git clone <repository-url>
-cd vue-react-micro-frontend-monorepo
-
-# 2. Install dependencies
 pnpm install
+```
 
-# 3. Build the React remote app (required — see note below)
+### Run the integrated Vue + React app
+
+The Federation remote entry is produced by the React production build, so start the React preview first.
+
+**Terminal 1 — build and serve the React remote:**
+
+```bash
 pnpm --filter react build
-
-# 4. Preview the React remote (serves the built files with remoteEntry.js)
 pnpm --filter react preview
+```
 
-# 5. In a separate terminal, start the Vue host shell
+This serves the remote on `http://localhost:5175`.
+
+**Terminal 2 — start the Vue host:**
+
+```bash
 pnpm --filter vue dev
 ```
 
-The Vue host app runs on **http://localhost:5173** and the React remote on **http://localhost:5174**.
+Open `http://localhost:5173`. The host can now load the federated React pages.
 
-> **Important:** `@originjs/vite-plugin-federation` only generates the `remoteEntry.js` file during a **production build**, not in dev mode. The Vue host fetches this file to load the React micro-frontend. Therefore you **must** build and preview the React app first. Simply running `pnpm dev` on both will **not** show the React content inside the Vue app.
-
-### Production Build
+### Run apps independently
 
 ```bash
-pnpm build
-pnpm preview
+# React standalone app (does not provide the built remote used by the Vue host)
+pnpm --filter react dev
+
+# Nuxt landing page
+pnpm --filter nuxt-landing dev
 ```
 
-## How It Works
+`pnpm dev` starts the workspace apps' development servers together, but it does not replace the React build-and-preview step required by the current Vue Federation URL.
 
-1. The **React app** (`apps/react`) exposes its `App` component as a federated module via `@originjs/vite-plugin-federation` with the identifier `./ReactApp`.
-2. The **Vue app** (`apps/vue`) is configured as the host shell. It declares `react_app` as a remote in `vite.config.ts`, pointing to the React app's `remoteEntry.js`.
-3. `ReactWrapper.vue` dynamically imports `react_app/ReactApp` and renders it inside a Vue component using `React.createElement` and `ReactDOM.createRoot`.
-4. The view at `/` (defined with Vue Router) renders `<ReactWrapper />`, seamlessly embedding the React micro-frontend inside the Vue shell.
+## Build commands
 
-## Useful Commands
+```bash
+# Build every workspace app/package that defines a build task
+pnpm build
 
-| Command          | Description                        |
-| ---------------- | ---------------------------------- |
-| `pnpm dev`       | Start all apps in dev mode         |
-| `pnpm build`     | Build all apps and packages        |
-| `pnpm preview`   | Preview production builds          |
-| `pnpm check-types` | Run TypeScript type checking     |
-| `pnpm format`    | Format code with Prettier          |
+# Build one app
+pnpm --filter vue build
+pnpm --filter react build
+pnpm --filter nuxt-landing build
+
+# Generate the Nuxt app as a static site
+pnpm --filter nuxt-landing generate
+
+# Format TypeScript, TSX, and Markdown files
+pnpm format
+```
+
+## Deployment notes
+
+The Vue host and React remote are separate build artifacts. Before deploying them, change the remote URL in `apps/vue/vite.config.ts` from the local `localhost:5175` address to the deployed React `remoteEntry.js` URL. Keep the remote entry and the assets it references deployed together, and configure cross-origin access if the host and remote use different origins.
+
+GitHub Pages can host static builds. For project sites under `https://<user>.github.io/<repository>/`, set the Vite `base` path to `/<repository>/`; a combined Vue/React deployment also needs a path for the React remote and an updated remote URL. The Vue router uses history mode, so a static host needs a route fallback for direct visits or refreshes on paths such as `/courses`; alternatively, the router can use hash history. The Nuxt app has a `generate` script for static output. See the [Vite GitHub Pages guide](https://vite.dev/guide/static-deploy#github-pages) and [GitHub Pages documentation](https://docs.github.com/en/pages).
